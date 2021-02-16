@@ -206,6 +206,7 @@ export const Popover = forwardRef(
     }
 
     const setRef = (el: HTMLElement | null) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const childRef = (child as any).ref
 
       setReferenceElement(el)
@@ -242,6 +243,7 @@ export const Popover = forwardRef(
           scheme={scheme}
           shadow={shadow}
           tone={tone}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           width={width as any}
         >
           {arrow && <PopoverArrow ref={setArrowElement} style={styles.arrow} />}

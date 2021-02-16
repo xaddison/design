@@ -61,6 +61,7 @@ describe('components/menu', () => {
         const value = undefined
 
         return (
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           <MenuContext.Provider value={value as any}>
             <Debug />
           </MenuContext.Provider>
@@ -92,6 +93,7 @@ describe('components/menu', () => {
         }
 
         return (
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           <MenuContext.Provider value={value as any}>
             <Debug />
           </MenuContext.Provider>

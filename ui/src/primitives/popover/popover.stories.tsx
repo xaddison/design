@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+
 import {
   Box,
   Button,
@@ -115,6 +117,7 @@ export const plain = () => {
   return <PropsExample {...props} />
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function PropsExample(props: any) {
   const [portalElement, setPortalElement] = useState<HTMLDivElement | null>(null)
 
