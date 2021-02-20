@@ -2,21 +2,24 @@ import React, {forwardRef} from 'react'
 import styled from 'styled-components'
 import {useForwardedRef, useCustomValidity} from '../../hooks'
 import {
-  responsiveInputPaddingStyle,
-  responsiveRadiusStyle,
-  ResponsiveRadiusStyleProps,
-  TextInputResponsivePaddingStyleProps,
-  TextInputInputStyleProps,
-  TextInputRepresentationStyleProps,
-  textInputRootStyle,
-  textInputBaseStyle,
-  textInputFontSizeStyle,
-  textInputRepresentationStyle,
-} from '../../styles/internal'
+  _responsiveInputPaddingStyle,
+  _responsiveRadiusStyle,
+  _ResponsiveRadiusStyleProps,
+  _TextInputResponsivePaddingStyleProps,
+  _TextInputInputStyleProps,
+  _TextInputRepresentationStyleProps,
+  _textInputRootStyle,
+  _textInputBaseStyle,
+  _textInputFontSizeStyle,
+  _textInputRepresentationStyle,
+} from '../../styles'
 import {ThemeFontWeightKey} from '../../theme'
 import {ResponsiveRadiusProps} from '../types'
 
-interface TextInputProps extends ResponsiveRadiusProps {
+/**
+ * @public
+ */
+export interface TextAreaProps extends ResponsiveRadiusProps {
   border?: boolean
   customValidity?: string
   fontSize?: number | number[]
@@ -24,7 +27,7 @@ interface TextInputProps extends ResponsiveRadiusProps {
   weight?: ThemeFontWeightKey
 }
 
-const Root = styled.span(textInputRootStyle)
+const Root = styled.span(_textInputRootStyle)
 
 const InputRoot = styled.span`
   flex: 1;
@@ -33,20 +36,23 @@ const InputRoot = styled.span`
   position: relative;
 `
 
-const Input = styled.textarea<TextInputResponsivePaddingStyleProps & TextInputInputStyleProps>(
-  responsiveInputPaddingStyle,
-  textInputBaseStyle,
-  textInputFontSizeStyle
+const Input = styled.textarea<_TextInputResponsivePaddingStyleProps & _TextInputInputStyleProps>(
+  _responsiveInputPaddingStyle,
+  _textInputBaseStyle,
+  _textInputFontSizeStyle
 )
 
-const Presentation = styled.div<ResponsiveRadiusStyleProps & TextInputRepresentationStyleProps>(
-  responsiveRadiusStyle,
-  textInputRepresentationStyle
+const Presentation = styled.div<_ResponsiveRadiusStyleProps & _TextInputRepresentationStyleProps>(
+  _responsiveRadiusStyle,
+  _textInputRepresentationStyle
 )
 
+/**
+ * @public
+ */
 export const TextArea = forwardRef(
   (
-    props: TextInputProps & Omit<React.HTMLProps<HTMLTextAreaElement>, 'as'>,
+    props: TextAreaProps & Omit<React.HTMLProps<HTMLTextAreaElement>, 'as'>,
     forwardedRef: React.ForwardedRef<HTMLTextAreaElement>
   ) => {
     const {

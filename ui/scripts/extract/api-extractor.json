@@ -328,7 +328,7 @@
      */
     "extractorMessageReporting": {
       "default": {
-        "logLevel": "warning"
+        "logLevel": "error"
         // "addToApiReportFile": false
       }
 
@@ -349,16 +349,19 @@
      */
     "tsdocMessageReporting": {
       "default": {
-        "logLevel": "warning"
-        // "addToApiReportFile": false
-      }
+        "logLevel": "error",
+        "addToApiReportFile": false
+      },
 
-      // "tsdoc-link-tag-unescaped-text": {
-      //   "logLevel": "warning",
-      //   "addToApiReportFile": true
-      // },
-      //
-      // . . .
+      "tsdoc-link-tag-unescaped-text": {
+        "logLevel": "warning",
+        "addToApiReportFile": true
+      },
+
+      "tsdoc-unsupported-tag": {
+        "logLevel": "warning",
+        "addToApiReportFile": false
+      }
     }
   }
 }

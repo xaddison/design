@@ -1,15 +1,21 @@
 import {css, CSSObject, FlattenSimpleInterpolation} from 'styled-components'
 import {ThemeFontWeightKey} from '../../theme'
-import {focusRingBorderStyle, focusRingStyle} from '../focusRing'
-import {getResponsiveProp, rem, responsive} from '../helpers'
-import {ThemeProps} from '../types'
+import {_focusRingBorderStyle, _focusRingStyle} from '../focusRing'
+import {_getResponsiveProp, rem, _responsive} from '../helpers'
+import {_ThemeProps} from '../types'
 
-export interface TextInputInputStyleProps {
+/**
+ * @internal
+ */
+export interface _TextInputInputStyleProps {
   $fontSize?: number | number[]
   $weight?: ThemeFontWeightKey
 }
 
-export interface TextInputRepresentationStyleProps {
+/**
+ * @internal
+ */
+export interface _TextInputRepresentationStyleProps {
   $border?: boolean
   $hasPrefix?: boolean
   $hasSuffix?: boolean
@@ -21,12 +27,18 @@ const ROOT_STYLE = css`
   }
 `
 
-export function textInputRootStyle(): FlattenSimpleInterpolation {
+/**
+ * @internal
+ */
+export function _textInputRootStyle(): FlattenSimpleInterpolation {
   return ROOT_STYLE
 }
 
-export function textInputBaseStyle(
-  props: TextInputInputStyleProps & ThemeProps
+/**
+ * @internal
+ */
+export function _textInputBaseStyle(
+  props: _TextInputInputStyleProps & _ThemeProps
 ): FlattenSimpleInterpolation {
   const {theme, $weight} = props
   const font = theme.sanity.fonts.text
@@ -80,11 +92,16 @@ export function textInputBaseStyle(
   `
 }
 
-export function textInputFontSizeStyle(props: TextInputInputStyleProps & ThemeProps): CSSObject[] {
+/**
+ * @internal
+ */
+export function _textInputFontSizeStyle(
+  props: _TextInputInputStyleProps & _ThemeProps
+): CSSObject[] {
   const {theme} = props
   const {fonts, media} = theme.sanity
 
-  return responsive(media, getResponsiveProp(props.$fontSize, [2]), (sizeIndex) => {
+  return _responsive(media, _getResponsiveProp(props.$fontSize, [2]), (sizeIndex) => {
     const size = fonts.text.sizes[sizeIndex] || fonts.text.sizes[2]
 
     return {
@@ -94,8 +111,11 @@ export function textInputFontSizeStyle(props: TextInputInputStyleProps & ThemePr
   })
 }
 
-export function textInputRepresentationStyle(
-  props: TextInputRepresentationStyleProps & ThemeProps
+/**
+ * @internal
+ */
+export function _textInputRepresentationStyle(
+  props: _TextInputRepresentationStyleProps & _ThemeProps
 ): FlattenSimpleInterpolation {
   const {$border, $hasPrefix, $hasSuffix, theme} = props
   const {focusRing, input} = theme.sanity
@@ -125,7 +145,7 @@ export function textInputRepresentationStyle(
     /* enabled */
     *:not(:disabled) + && {
       --input-box-shadow: ${$border
-        ? focusRingBorderStyle({color: color.default.enabled.border, width: input.border.width})
+        ? _focusRingBorderStyle({color: color.default.enabled.border, width: input.border.width})
         : undefined};
     }
 
@@ -134,13 +154,13 @@ export function textInputRepresentationStyle(
       --card-bg-color: ${color.invalid.enabled.bg};
       --card-fg-color: ${color.invalid.enabled.fg};
       --input-box-shadow: ${$border
-        ? focusRingBorderStyle({color: color.invalid.enabled.border, width: input.border.width})
+        ? _focusRingBorderStyle({color: color.invalid.enabled.border, width: input.border.width})
         : 'none'};
     }
 
     /* focused */
     *:not(:disabled):not(:read-only):focus + && {
-      --input-box-shadow: ${focusRingStyle({
+      --input-box-shadow: ${_focusRingStyle({
         border: $border
           ? {color: color.default.enabled.border, width: input.border.width}
           : undefined,
@@ -153,7 +173,7 @@ export function textInputRepresentationStyle(
       --card-bg-color: ${color.default.disabled.bg};
       --card-fg-color: ${color.default.disabled.fg};
       --input-box-shadow: ${$border
-        ? focusRingBorderStyle({
+        ? _focusRingBorderStyle({
             color: color.default.disabled.border,
             width: input.border.width,
           })
@@ -169,7 +189,7 @@ export function textInputRepresentationStyle(
 
       *:not(:disabled):not(:read-only):not(:invalid):not(:focus):hover + && {
         --input-box-shadow: ${$border
-          ? focusRingBorderStyle({
+          ? _focusRingBorderStyle({
               color: color.default.hovered.border,
               width: input.border.width,
             })
