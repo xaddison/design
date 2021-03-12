@@ -4,18 +4,6 @@ import React from 'react'
 import styled from 'styled-components'
 
 function BlockSerializer(props: any) {
-  // const {style = 'normal'} = props.node
-
-  // if (style === 'blockquote') {
-  //   return (
-  //     <Box as="blockquote" marginY={[4, 4, 5]}>
-  //       <Text as="p" muted size={[2, 2, 3]}>
-  //         {props.children}
-  //       </Text>
-  //     </Box>
-  //   )
-  // }
-
   return (
     <Box marginY={[3, 3, 4]}>
       <Text as="p" muted size={[1, 1, 2]}>

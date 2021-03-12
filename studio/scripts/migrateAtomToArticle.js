@@ -1,4 +1,6 @@
-import client from 'part:@sanity/base/client'
+import sanityClient from 'part:@sanity/base/client'
+
+const client = sanityClient.withConfig({apiVersion: '2021-03-31'})
 
 const fetchDocuments = () => client.fetch(`*[_type == 'atom']`)
 

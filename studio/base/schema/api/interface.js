@@ -10,6 +10,12 @@ export const apiInterface = {
     },
 
     {
+      type: 'slug',
+      name: 'slug',
+      title: 'Slug',
+    },
+
+    {
       type: 'reference',
       name: 'release',
       title: 'Release',

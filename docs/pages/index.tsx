@@ -3,19 +3,20 @@ import React from 'react'
 import {AppLayout, SEO, useApp} from '$components'
 import {Screen} from '$components/screen'
 import {features} from '$config'
-import {loadPageData} from '$lib/page'
+import {loadGlobalPageData} from '$lib/page'
 import {isRecord} from '$lib/types'
 
 export async function getStaticProps(opts: {preview?: boolean}) {
   const {preview = features.preview} = opts
-  const data = await loadPageData({preview})
+  const pageData = await loadGlobalPageData({preview})
 
-  return {props: {...data, preview}}
+  return {props: {...pageData, preview}}
 }
 
 function IndexPage() {
-  const {target} = useApp()
-  const seo: Record<string, any> | null = isRecord(target) ? (target.seo as any) : null
+  const {data} = useApp()
+  const target = isRecord(data) && isRecord(data.target) && data.target
+  const seo: Record<string, any> | null = target ? (target.seo as any) : null
 
   return (
     <>
@@ -23,11 +24,9 @@ function IndexPage() {
         <title>Sanity UI</title>
       </Head>
 
-      <SEO seo={seo} title={isRecord(target) && target.title} />
+      <SEO seo={seo} title={target && target.title} />
 
-      <AppLayout>
-        {isRecord(target) && target._type === 'screen' && <Screen target={target} />}
-      </AppLayout>
+      <AppLayout>{target && target._type === 'screen' && <Screen target={target} />}</AppLayout>
     </>
   )
 }

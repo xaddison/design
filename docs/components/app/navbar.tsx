@@ -17,13 +17,14 @@ interface Route {
 }
 
 export function AppNavbar() {
-  const {colorScheme, menu, nav, setColorScheme} = useApp()
+  const {colorScheme, data, menu, setColorScheme} = useApp()
+  const nav = isRecord(data) && data.nav
   const router = useRouter()
   const [menuOpen, setMenuOpen] = useState(false)
   const navItems = isRecord(nav) && isArray(nav.items) ? nav.items : []
   const navItemRecords: Record<string, unknown>[] = navItems.filter(isRecord)
   const navbarRoutes: Route[] = navItemRecords
-    .filter((item) => features.hintHiddenContent || !item.hidden)
+    .filter((item) => !item.hidden || features.hintHiddenContent)
     .map((item) => ({
       hidden: Boolean(item.hidden),
       href: `/${item.segment || ''}`,

@@ -15,12 +15,11 @@ import {NavMenu} from '$lib/nav'
 
 export function AppProvider(props: {
   children?: React.ReactNode
-  menu: NavMenu | null
-  nav: unknown
-  settings: unknown
-  target: unknown
+  data: unknown
+  menu?: NavMenu
+  params: Record<string, any>
 }) {
-  const {children, menu, nav, settings, target} = props
+  const {children, data, menu, params} = props
   const prefersDark = usePrefersDark()
   const [colorScheme, setColorScheme] = useState<ThemeColorSchemeKey>(
     prefersDark ? 'dark' : 'light'
@@ -33,9 +32,7 @@ export function AppProvider(props: {
       <ThemeColorProvider tone="transparent">
         <GlobalStyle />
       </ThemeColorProvider>
-      <AppContext.Provider
-        value={{colorScheme, menu, nav, setColorScheme, settings, target, zOffsets}}
-      >
+      <AppContext.Provider value={{colorScheme, data, menu, params, setColorScheme, zOffsets}}>
         <LayerProvider>
           <ToastProvider zOffset={zOffsets.toast}>{children}</ToastProvider>
         </LayerProvider>

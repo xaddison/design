@@ -1,14 +1,15 @@
 import BlockContent from '@sanity/block-content-to-react'
 import {Box, Card, Code, Heading, Text} from '@sanity/ui'
 import React, {useMemo} from 'react'
-// import {blocksToText} from '../article/helpers'
 import {sanity} from '$config'
 
 const CODE_LANGUAGES = {
   sh: 'bash',
+  tsx: 'typescript',
+  ts: 'typescript',
 }
 
-export function Content({blocks}: {blocks: unknown[]}) {
+export function CommentContent({blocks}: {blocks: unknown[]}) {
   const serializers = useMemo(() => buildSerializers(), [])
 
   return <BlockContent {...sanity} blocks={blocks} serializers={serializers} />
@@ -57,9 +58,6 @@ function buildSerializers() {
     const {style = 'normal'} = props.node
 
     if (HEADER_RE.test(style)) {
-      // const text = blocksToText([props.node])
-      // const heading = headings.find((t: any) => t.text === text)
-
       return (
         <Box {...headingProps[style].box}>
           <Heading as={style} {...headingProps[style].heading}>
@@ -89,20 +87,9 @@ function buildSerializers() {
   }
 
   return {
-    // list: ListSerializer,
-    // listItem: ListItemSerializer,
     types: {
       block: BlockSerializer,
-      //   callout: CalloutSerializer,
       code: CodeSerializer,
-      //   codeExample: CodeExampleSerializer,
-      //   image: ImageSerializer,
-      //   npmPackageBadge: NpmPackageBadgeSerializer,
-      //   propertyTable: PropertyTableSerializer,
-      //   'content.colorGrid': ColorGrid,
-      //   'content.groqLogoGrid': GroqLogoGrid,
-      //   'content.sanityLogoGrid': SanityLogoGrid,
-      //   'content.figmaEmbed': FigmaEmbed,
     },
   }
 }

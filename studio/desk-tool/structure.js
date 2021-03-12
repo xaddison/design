@@ -1,5 +1,5 @@
 import S from '@sanity/desk-tool/structure-builder'
-import {CogIcon} from '@sanity/icons'
+import {CogIcon, EditIcon, PackageIcon} from '@sanity/icons'
 import documentStore from 'part:@sanity/base/datastore/document'
 import React from 'react'
 import {map} from 'rxjs/operators'
@@ -17,7 +17,18 @@ const STRUCTURE_CUSTOM_TYPES = [
   'settings',
 ]
 
+// Types that are editable by the <release> list
+const RELEASE_TYPES = [
+  'api.class',
+  'api.function',
+  'api.interface',
+  'api.release',
+  'api.typeAlias',
+  'api.variable',
+]
+
 const packagesListItem = S.listItem()
+  .icon(PackageIcon)
   .title('Packages')
   .child(
     S.documentTypeList('api.package')
@@ -40,10 +51,28 @@ const packagesListItem = S.listItem()
                       .title(release.version)
                       .child(
                         S.documentList()
+                          .canHandleIntent((name, params) => {
+                            if (name === 'edit' && RELEASE_TYPES.includes(params.type)) {
+                              return true
+                            }
+
+                            return false
+                          })
                           .defaultOrdering([{field: 'name', direction: 'asc'}])
                           .id(release._id)
                           .title(release.version)
-                          .filter(`_type != "api.package" && references("${release._id}")`)
+                          .filter(`_type != "api.package" && references($releaseId)`)
+                          .params({releaseId: release._id})
+                          .menuItems([
+                            S.menuItem()
+                              .icon(EditIcon)
+                              .title('Edit release')
+                              .intent({
+                                type: 'edit',
+                                params: {id: release._id, type: 'api.release'},
+                              })
+                              .showAsAction(),
+                          ])
                       )
                   )
                 )

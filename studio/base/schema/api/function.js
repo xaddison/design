@@ -11,6 +11,12 @@ export const apiFunction = {
     },
 
     {
+      type: 'slug',
+      name: 'slug',
+      title: 'Slug',
+    },
+
+    {
       type: 'reference',
       name: 'release',
       title: 'Release',

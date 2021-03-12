@@ -1,10 +1,9 @@
 import {Box, Button, Card, Container, Flex, Heading, Label, Stack, Text} from '@sanity/ui'
 import React, {useMemo} from 'react'
 import {ArticleContent} from './articleContent'
-import {getHeadings, getTOCTree} from './helpers'
-import {HeadingNode} from './types'
 import {TimeAgo} from '$components'
 import {FigmaLogo} from '$components/assets/figmaLogo'
+import {getHeadings, getTOCTree, HeadingNode} from '$lib/portable-text'
 import {isArray, isRecord, isString} from '$lib/types'
 
 export function Article(props: {article: Record<string, unknown>}) {

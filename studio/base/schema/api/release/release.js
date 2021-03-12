@@ -1,3 +1,5 @@
+import {contentField} from './content'
+
 export const apiRelease = {
   type: 'document',
   name: 'api.release',
@@ -7,7 +9,11 @@ export const apiRelease = {
       type: 'string',
       name: 'version',
       title: 'Version',
+      readOnly: true,
     },
+
+    contentField,
+
     {
       type: 'array',
       name: 'members',
@@ -26,9 +32,10 @@ export const apiRelease = {
           weak: true,
         },
       ],
+      readOnly: true,
     },
   ],
-  readOnly: true,
+
   preview: {
     select: {
       title: 'version',

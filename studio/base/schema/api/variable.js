@@ -10,6 +10,12 @@ export const apiVariable = {
     },
 
     {
+      type: 'slug',
+      name: 'slug',
+      title: 'Slug',
+    },
+
+    {
       type: 'reference',
       name: 'release',
       title: 'Release',
@@ -24,6 +30,14 @@ export const apiVariable = {
       options: {
         layout: 'checkbox',
       },
+    },
+
+    {
+      type: 'reference',
+      name: 'propsType',
+      title: 'Props type',
+      to: [{type: 'api.interface'}, {type: 'api.typeAlias'}],
+      weak: true,
     },
 
     {

@@ -34,7 +34,6 @@ function NavMenuItems({items}: {items: NavMenuItem[]}) {
             <Box key={itemIndex}>
               <NavLink
                 href={item.href}
-                size={2}
                 style={item.hidden ? {opacity: 0.25} : undefined}
                 weight="medium"
               >
@@ -63,10 +62,8 @@ function LabeledNavMenu({menu}: {menu: NavMenuType}) {
         style={{cursor: 'pointer'}}
       >
         <Flex justify="space-between">
-          <Label size={2} weight="medium">
-            {menu.title}
-          </Label>
-          <Label muted size={2}>
+          <Label weight="medium">{menu.title}</Label>
+          <Label muted>
             <AnimatedChevronDownIcon
               style={{
                 transform: `rotate(${collapsed ? '90deg' : '0'})`,

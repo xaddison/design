@@ -1,4 +1,8 @@
-import client from 'part:@sanity/base/client'
+import sanityClient from 'part:@sanity/base/client'
+
+const client = sanityClient.withConfig({apiVersion: '2021-03-31'})
+
+const BATCH_SIZE = 100
 
 const apiTypes = [
   'api.class',
@@ -11,7 +15,7 @@ const apiTypes = [
 ]
 
 async function deleteApiDocs() {
-  const refs = await client.fetch(`*[_type in $apiTypes]{_id}[0..100]`, {apiTypes})
+  const refs = await client.fetch(`*[_type in $apiTypes]{_id}[0...${BATCH_SIZE}]`, {apiTypes})
 
   let tx = client.transaction()
 
@@ -23,7 +27,7 @@ async function deleteApiDocs() {
 
   console.log('deleted', refs.length, 'docs')
 
-  if (refs.length === 100) {
+  if (refs.length === BATCH_SIZE) {
     await deleteApiDocs()
   }
 }

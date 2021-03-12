@@ -12,16 +12,20 @@ const Root = styled(Layer).attrs({forwardedAs: 'nav'})`
   border-right: 1px solid var(--card-border-color);
 `
 
-export function PageHeader({menu}: {menu: NavMenuType}) {
+export function PageHeader({header, menu}: {header: React.ReactNode; menu: NavMenuType}) {
   return (
     <Root>
-      {menu.items.map((item, itemIndex) => {
-        if (item.type === 'menu') {
-          return <NavMenu key={itemIndex} menu={item} />
-        }
+      {header}
 
-        return null
-      })}
+      <div>
+        {menu.items.map((item, itemIndex) => {
+          if (item.type === 'menu') {
+            return <NavMenu key={itemIndex} menu={item} />
+          }
+
+          return null
+        })}
+      </div>
     </Root>
   )
 }
