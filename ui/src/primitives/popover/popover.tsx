@@ -10,7 +10,7 @@ import {EMPTY_RECORD} from '../../constants'
 import {useForwardedRef} from '../../hooks'
 import {ThemeColorSchemeKey, ThemeColorToneKey} from '../../theme'
 import {Placement} from '../../types'
-import {Layer, Portal, useBoundaryElement, usePortal} from '../../utils'
+import {Layer, Portal, useBoundaryElement} from '../../utils'
 import {Card} from '../card'
 import {_ResponsiveWidthStyleProps} from '../container'
 import {responsiveContainerWidthStyle} from '../container/styles'
@@ -103,7 +103,7 @@ export const Popover = forwardRef(
     const {
       allowedAutoPlacements,
       arrow = true,
-      boundaryElement: boundaryElementProp = boundaryElementContext,
+      boundaryElement = boundaryElementContext.element,
       children: child,
       content,
       constrainSize,
@@ -126,8 +126,6 @@ export const Popover = forwardRef(
     } = props
     const forwardedRef = useForwardedRef(ref)
     const placement = typeof placementProp === 'string' ? placementProp : 'bottom'
-    const portal = usePortal()
-    const boundaryElement = boundaryElementProp || portal.boundaryElement
     const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(null)
     const [popperElement, setPopperElement] = useState<HTMLElement | null>(null)
     const [arrowElement, setArrowElement] = useState<HTMLElement | null>(null)

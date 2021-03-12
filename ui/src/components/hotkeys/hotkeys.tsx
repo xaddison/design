@@ -6,11 +6,19 @@ import {Inline, KBD} from '../../primitives'
  * @public
  */
 export interface HotkeysProps {
+  /**
+   * The sequence of key names to render.
+   *
+   * @example
+   * ```tsx
+   * <Hotkeys keys={['Ctrl', 'S']} />
+   * ```
+   */
+  keys?: string[]
   padding?: number | number[]
   radius?: number | number[]
   size?: number | number[]
   space?: number | number[]
-  keys?: string[]
 }
 
 const Root = styled.kbd`

@@ -16,11 +16,13 @@ export interface ResponsiveBorderProps {
 // Box
 
 /**
+ * Defines how the total width and height of an element is calculated.
  * @public
  */
 export type BoxSizing = 'content' | 'border'
 
 /**
+ * Defines an element's inner and outer display types.
  * @public
  */
 export type BoxDisplay = 'none' | 'block' | 'grid' | 'flex' | 'inline-block'

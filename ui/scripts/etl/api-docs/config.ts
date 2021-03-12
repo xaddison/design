@@ -16,7 +16,10 @@ export const config = {
   },
 
   releaseTags: {
-    Beta: 'beta',
-    Public: 'public',
-  } as {[key: string]: 'beta' | 'public'},
+    0: undefined,
+    1: 'internal',
+    2: 'alpha',
+    3: 'beta',
+    4: 'public',
+  },
 }

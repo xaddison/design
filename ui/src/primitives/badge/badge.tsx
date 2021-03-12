@@ -25,30 +25,32 @@ const Root = styled(Box)<_BadgeStyleProps & _ResponsiveRadiusStyleProps>(
 /**
  * @public
  */
-export const Badge = forwardRef((props: BadgeProps & React.HTMLProps<HTMLDivElement>, ref) => {
-  const {
-    children,
-    fontSize,
-    mode = 'default',
-    padding = 1,
-    radius = 2,
-    tone = 'default',
-    ...restProps
-  } = props
+export const Badge = forwardRef(
+  (props: BadgeProps & React.HTMLProps<HTMLDivElement>, ref: React.Ref<HTMLDivElement>) => {
+    const {
+      children,
+      fontSize,
+      mode = 'default',
+      padding = 1,
+      radius = 2,
+      tone = 'default',
+      ...restProps
+    } = props
 
-  return (
-    <Root
-      data-ui="Badge"
-      {...restProps}
-      $mode={mode}
-      $tone={tone}
-      $radius={radius}
-      padding={padding}
-      ref={ref}
-    >
-      <Label size={fontSize}>{children}</Label>
-    </Root>
-  )
-})
+    return (
+      <Root
+        data-ui="Badge"
+        {...restProps}
+        $mode={mode}
+        $tone={tone}
+        $radius={radius}
+        padding={padding}
+        ref={ref}
+      >
+        <Label size={fontSize}>{children}</Label>
+      </Root>
+    )
+  }
+)
 
 Badge.displayName = 'Badge'

@@ -359,7 +359,12 @@
       },
 
       "tsdoc-unsupported-tag": {
-        "logLevel": "warning",
+        "logLevel": "none",
+        "addToApiReportFile": false
+      },
+
+      "tsdoc-undefined-tag": {
+        "logLevel": "none",
         "addToApiReportFile": false
       }
     }

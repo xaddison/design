@@ -6,6 +6,14 @@ import {_ThemeProps} from '../../styles'
 import {Menu} from './menu'
 import {useMenu} from './useMenu'
 
+/**
+ * @public
+ */
+export interface MenuGroupProps {
+  children: React.ReactNode
+  title: string
+}
+
 const Root = styled.button((props: _ThemeProps) => {
   const {theme} = props
   const tone = theme.sanity.color.card
@@ -56,7 +64,7 @@ const TextContainer = styled.span`
 /**
  * @public
  */
-export function MenuGroup(props: {children: React.ReactNode; title: string}): React.ReactElement {
+export function MenuGroup(props: MenuGroupProps): React.ReactElement {
   const {children, title} = props
   const [open, setOpen] = useState(false)
   const {mount, onItemClick, onMouseEnter, onMouseLeave} = useMenu()

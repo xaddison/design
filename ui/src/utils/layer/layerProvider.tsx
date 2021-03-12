@@ -6,10 +6,15 @@ import {LayerContextValue} from './types'
 /**
  * @public
  */
-export function LayerProvider(props: {
+export interface LayerProviderProps {
   children?: React.ReactNode
   zOffset?: number | number[]
-}): React.ReactElement {
+}
+
+/**
+ * @public
+ */
+export function LayerProvider(props: LayerProviderProps): React.ReactElement {
   const {children, zOffset: zOffsetProp = 0} = props
   const parent = useContext(LayerContext)
   const zOffset = useResponsiveProp(zOffsetProp)

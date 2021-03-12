@@ -1,6 +1,7 @@
+import {ExcerptToken} from '@microsoft/api-extractor-model'
 import {createId} from './helpers'
 
-export function transformTokens(tokens: any[]): any {
+export function transformTokens(tokens: ExcerptToken[]): Record<string, unknown>[] {
   return tokens.map((t, idx) => {
     if (t.kind === 'Content') {
       return {
@@ -17,7 +18,7 @@ export function transformTokens(tokens: any[]): any {
         text: t.text,
         reference: {
           _type: 'reference',
-          _ref: createId(t.canonicalReference),
+          _ref: createId(t.canonicalReference!.toString()),
           _weak: true,
         },
       }

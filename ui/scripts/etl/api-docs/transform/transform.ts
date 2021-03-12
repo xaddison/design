@@ -1,19 +1,35 @@
+import {
+  ApiClass,
+  ApiFunction,
+  ApiInterface,
+  ApiItem,
+  ApiPackage,
+  ApiTypeAlias,
+  ApiVariable,
+} from '@microsoft/api-extractor-model'
 import {config} from '../config'
-import {hash} from './helpers'
+import {isArray, isRecord} from './helpers'
 import {transformClass} from './transformClass'
 import {transformFunction} from './transformFunction'
 import {transformInterface} from './transformInterface'
 import {transformTypeAlias} from './transformTypeAlias'
 import {transformVariable} from './transformVariable'
+import {DocumentValue} from './types'
 
-function transformPackage(node: any, currPackageDoc: any, releaseDoc: any) {
-  let releases = currPackageDoc?.releases ? currPackageDoc.releases.slice(0) : []
+function transformPackage(
+  node: ApiPackage,
+  currPackageDoc: DocumentValue | null,
+  releaseDoc: DocumentValue
+) {
+  const _releases = currPackageDoc?.releases
 
-  const release = releases.find((r: any) => r._key === releaseDoc._id)
+  let releases = isArray(_releases) ? _releases : []
+
+  const release = releases.find((r) => isRecord(r) && r._key === releaseDoc._id)
 
   if (release) {
     // replace
-    releases = releases.map((r: any) => {
+    releases = releases.map((r) => {
       if (r === release) {
         return {
           _type: 'reference',
@@ -38,7 +54,7 @@ function transformPackage(node: any, currPackageDoc: any, releaseDoc: any) {
   return {
     ...currPackageDoc,
     _type: 'api.package',
-    _id: hash(node.canonicalReference),
+    _id: node.name.replace(/@/g, '').replace(/\./g, '-').replace(/\//g, '_'),
     name: node.name,
     releases,
     latestRelease: {
@@ -49,46 +65,54 @@ function transformPackage(node: any, currPackageDoc: any, releaseDoc: any) {
   }
 }
 
-function transformMember(member: any) {
+function transformMember(member: ApiItem, releaseDoc: DocumentValue) {
   if (member.kind === 'Class') {
-    return transformClass(member)
+    return transformClass(member as ApiClass, releaseDoc)
   }
 
   if (member.kind === 'Function') {
-    return transformFunction(member)
+    return transformFunction(member as ApiFunction, releaseDoc)
   }
 
   if (member.kind === 'Interface') {
-    return transformInterface(member)
+    return transformInterface(member as ApiInterface, releaseDoc)
   }
 
   if (member.kind === 'TypeAlias') {
-    return transformTypeAlias(member)
+    return transformTypeAlias(member as ApiTypeAlias, releaseDoc)
   }
 
   if (member.kind === 'Variable') {
-    return transformVariable(member)
+    return transformVariable(member as ApiVariable, releaseDoc)
   }
 
   throw new Error(`package: unknown member type: ${member.kind}`)
 }
 
-export function transform(input: any, currPackageDoc: any): any {
+export function transform(
+  apiPackage: ApiPackage,
+  currPackageDoc: DocumentValue | null
+): DocumentValue[] {
   const {version, scope, name} = config.package
 
   const releaseDoc = {
     _type: 'api.release',
-    _id: hash(`${scope}/${name}@${version}`),
-    name: `${scope}/${name}@${version}`,
-    members: [] as any[],
+    _id: `${scope}_${name}_${version}`.replace(/@/g, '').replace(/\./g, '-').replace(/\//g, '_'),
+    version,
+    members: [] as {
+      _type: 'reference'
+      _key: string
+      _ref: string
+      _weak: boolean
+    }[],
   }
 
-  const packageDoc = transformPackage(input, currPackageDoc, releaseDoc)
+  const packageDoc = transformPackage(apiPackage, currPackageDoc, releaseDoc)
 
-  const docs: any[] = [releaseDoc]
+  const docs: DocumentValue[] = [releaseDoc]
 
-  for (const member of input.members[0].members) {
-    const memberDoc = transformMember(member)
+  for (const member of apiPackage.members[0].members) {
+    const memberDoc = transformMember(member, releaseDoc)
 
     docs.push(memberDoc)
 

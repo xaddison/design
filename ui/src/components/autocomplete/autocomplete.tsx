@@ -394,7 +394,12 @@ InnerAutocomplete.displayName = 'Autocomplete'
 
 /**
  * The `Autocomplete` component is typically used for search components.
- * It consists of a text input for writing a query, and properties for rendering suggestions.
+ *
+ * @remarks
+ * The `Autocomplete` component consists of a text input for writing a query, and properties for
+ * rendering suggestions.
+ *
+ * @see AutocompleteProps
  *
  * @public
  */

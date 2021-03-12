@@ -1,16 +1,26 @@
+import {ApiTypeAlias} from '@microsoft/api-extractor-model'
 import {config} from '../config'
-import {createId} from './helpers'
+import {createId, sanitizeName, slugify} from './helpers'
 import {transformDocComment} from './transformDocComment'
 import {transformTokens} from './transformTokens'
+import {DocumentValue} from './types'
 
-export function transformTypeAlias(node: any): any {
+export function transformTypeAlias(node: ApiTypeAlias, releaseDoc: DocumentValue): DocumentValue {
+  const docComment = node.tsdocComment
+  const name = sanitizeName(node.name)
+
   return {
     _type: 'api.typeAlias',
-    _id: createId(node.canonicalReference),
-    name: node.name,
-    comment: transformDocComment(node.docComment),
+    _id: createId(node.canonicalReference.toString()),
+    release: {_type: 'reference', _ref: releaseDoc._id, _weak: true},
+    name,
+    slug: {_type: 'slug', current: slugify(name)},
+    comment: docComment ? transformDocComment(docComment) : undefined,
     type: transformTokens(
-      node.excerptTokens.slice(node.typeTokenRange.startIndex, node.typeTokenRange.endIndex)
+      node.excerptTokens.slice(
+        node.typeExcerpt.tokenRange.startIndex,
+        node.typeExcerpt.tokenRange.endIndex
+      )
     ),
     releaseTag: config.releaseTags[node.releaseTag],
   }

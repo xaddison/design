@@ -5,10 +5,15 @@ import {BoundaryElementContextValue} from './types'
 /**
  * @public
  */
-export function BoundaryElementProvider(props: {
-  children: React.ReactNode
+export interface BoundaryElementProviderProps {
+  children?: React.ReactNode
   element: HTMLElement | null
-}): React.ReactElement {
+}
+
+/**
+ * @public
+ */
+export function BoundaryElementProvider(props: BoundaryElementProviderProps): React.ReactElement {
   const {children, element} = props
   const value: BoundaryElementContextValue = useMemo(() => ({version: 0.0, element}), [element])
 

@@ -7,12 +7,17 @@ import {RootTheme, Theme, ThemeContextValue} from './types'
 /**
  * @public
  */
-export function ThemeProvider(props: {
+export interface ThemeProviderProps {
   children?: React.ReactNode
   scheme?: ThemeColorSchemeKey
   theme: RootTheme
   tone?: ThemeColorName
-}): React.ReactElement {
+}
+
+/**
+ * @public
+ */
+export function ThemeProvider(props: ThemeProviderProps): React.ReactElement {
   const {children, scheme = 'light', theme: rootTheme, tone = 'default'} = props
 
   const theme: Theme = useMemo(() => {

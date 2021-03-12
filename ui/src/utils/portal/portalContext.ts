@@ -9,7 +9,6 @@ globalScope[elementKey] = null
 
 export const defaultContextValue: PortalContextValue = {
   version: 0.0,
-  boundaryElement: null,
   get element() {
     if (typeof window === 'undefined') {
       return null

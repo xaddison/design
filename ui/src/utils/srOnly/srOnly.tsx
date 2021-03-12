@@ -1,6 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 
+/**
+ * @public
+ */
+export interface SrOnlyProps {
+  as?: React.ElementType | keyof JSX.IntrinsicElements
+  children?: React.ReactNode
+}
+
 const Root = styled.div`
   display: block;
   width: 0;
@@ -12,10 +20,7 @@ const Root = styled.div`
 /**
  * @public
  */
-export function SrOnly(props: {
-  as?: React.ElementType | keyof JSX.IntrinsicElements
-  children?: React.ReactNode
-}): React.ReactElement {
+export function SrOnly(props: SrOnlyProps): React.ReactElement {
   const {as, children} = props
 
   return (

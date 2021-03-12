@@ -7,8 +7,13 @@ import {findMaxBreakpoints, findMinBreakpoints} from './helpers'
 /**
  * @public
  */
+export interface ElementQueryProps {}
+
+/**
+ * @public
+ */
 export const ElementQuery = forwardRef(function ElementQuery(
-  props: React.HTMLProps<HTMLDivElement>,
+  props: ElementQueryProps & React.HTMLProps<HTMLDivElement>,
   ref: React.Ref<HTMLDivElement>
 ): React.ReactElement {
   const theme = useTheme()

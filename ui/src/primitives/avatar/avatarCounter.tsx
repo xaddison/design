@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {forwardRef, useMemo} from 'react'
 import styled, {css} from 'styled-components'
 import {EMPTY_RECORD} from '../../constants'
 import {useResponsiveProp} from '../../hooks'
@@ -54,21 +54,24 @@ const Root = styled.div<{$size: AvatarSize[]}>(
 export interface AvatarCounterProps {
   count: number
   size?: AvatarSize | AvatarSize[]
-  tone?: 'navbar'
 }
 
 /**
  * @public
  */
-export function AvatarCounter(props: AvatarCounterProps): React.ReactElement {
-  const {count, size: sizeProp = 0, tone} = props
+export const AvatarCounter = forwardRef(function AvatarCounter(
+  props: AvatarCounterProps,
+  ref: React.Ref<HTMLDivElement>
+): React.ReactElement {
+  const {count, size: sizeProp = 0} = props
   const size: AvatarSize[] = useResponsiveProp(sizeProp, [0])
+  const textSize = useMemo(() => size.map((s) => (s === 0 ? 0 : s + 1)), [size])
 
   return (
-    <Root $size={size} data-tone={tone}>
-      <Text as="span" size={size.map((s) => (s === 0 ? 0 : s + 1))}>
+    <Root $size={size} ref={ref}>
+      <Text as="span" size={textSize}>
         <strong>{count}</strong>
       </Text>
     </Root>
   )
-}
+})

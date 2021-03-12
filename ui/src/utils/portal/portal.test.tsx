@@ -20,7 +20,6 @@ describe('utils/portal', () => {
       function Root() {
         const value: PortalContextValue = {
           version: 0.0,
-          boundaryElement: null,
           element: null,
         }
 

@@ -3,10 +3,11 @@
 import fs from 'fs'
 import path from 'path'
 import util from 'util'
-import uiApi from '../../../temp/ui.api.json'
+import {ApiModel} from '@microsoft/api-extractor-model'
 import {sanityClient} from '../../sanity'
 import {config} from './config'
 import {transform} from './transform'
+import {DocumentValue} from './transform/types'
 
 const writeFile = util.promisify(fs.writeFile)
 
@@ -39,11 +40,19 @@ async function loadToSanity(docs: any[]) {
 }
 
 async function etl() {
-  const pkg = await sanityClient.fetch('*[_type == "api.package" && name == $name][0]', {
-    name: `${config.package.scope}/${config.package.name}`,
-  })
+  const pkgDoc: DocumentValue | null = await sanityClient.fetch(
+    '*[_type == "api.package" && name == $name][0]',
+    {
+      name: `${config.package.scope}/${config.package.name}`,
+    }
+  )
 
-  const docs = transform(uiApi, pkg)
+  const apiModel = new ApiModel()
+  const apiPackage = apiModel.loadPackage(path.resolve(__dirname, '../../../temp/ui.api.json'))
+
+  const docs = transform(apiPackage, pkgDoc)
+
+  // const docs = transform(uiApi, pkg)
 
   if (config.publish.fs) {
     await loadToFs(docs)

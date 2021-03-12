@@ -1,5 +1,4 @@
 import {
-  TSDocParser,
   DocBlockTag,
   DocCodeSpan,
   DocComment,
@@ -16,14 +15,10 @@ import {
   DocPlainText,
   StandardTags,
 } from '@microsoft/tsdoc'
+import {isArray, isRecord} from './helpers'
 
-function _transformDocNode(docNode: DocNode, key: string): any {
+function _transformDocNode(docNode: DocNode, key: string): Record<string, unknown> | undefined {
   if (docNode.kind === 'CodeSpan') {
-    // return {
-    //   _type: 'tsdoc.codeSpan',
-    //   _key: key,
-    //   code: (docNode as DocCodeSpan).code,
-    // }
     return {
       _type: 'span',
       _key: key,
@@ -33,11 +28,6 @@ function _transformDocNode(docNode: DocNode, key: string): any {
   }
 
   if (docNode.kind === 'ErrorText') {
-    // return {
-    //   _type: 'tsdoc.errorText',
-    //   _key: key,
-    //   text: (docNode as DocErrorText).text,
-    // }
     return {
       _type: 'span',
       _key: key,
@@ -47,11 +37,6 @@ function _transformDocNode(docNode: DocNode, key: string): any {
   }
 
   if (docNode.kind === 'EscapedText') {
-    // return {
-    //   _type: 'tsdoc.escapedText',
-    //   _key: key,
-    //   text: (docNode as DocEscapedText).decodedText,
-    // }
     return {
       _type: 'span',
       _key: key,
@@ -62,8 +47,6 @@ function _transformDocNode(docNode: DocNode, key: string): any {
 
   if (docNode.kind === 'FencedCode') {
     const node = docNode as DocFencedCode
-
-    // console.log('FencedCode', node.language)
 
     return {
       _type: 'code',
@@ -79,11 +62,6 @@ function _transformDocNode(docNode: DocNode, key: string): any {
     if (linkTag.urlDestination) {
       const linkText: string = linkTag.linkText || linkTag.urlDestination
 
-      // return {
-      //   _type: 'tsdoc.link',
-      //   href: '#',
-      //   text: linkText,
-      // }
       return {
         _type: 'span',
         _key: key,
@@ -138,14 +116,20 @@ function _transformDocNode(docNode: DocNode, key: string): any {
     if (!children) return undefined
 
     // Find mark defs
-    const markDefs: any[] = []
+    const markDefs = []
 
     for (const child of children) {
       if (child._type === 'span' && child._markDef) {
-        const markDefKey = `${child._markDef._type}${markDefs.length}`
+        const markDefKey = isRecord(child._markDef) && `${child._markDef._type}${markDefs.length}`
 
-        child._markDef._key = markDefKey
-        child.marks.push(markDefKey)
+        if (isRecord(child._markDef)) {
+          child._markDef._key = markDefKey
+        }
+
+        if (isArray(child.marks)) {
+          child.marks.push(markDefKey)
+        }
+
         markDefs.push(child._markDef)
         delete child._markDef
       }
@@ -162,18 +146,9 @@ function _transformDocNode(docNode: DocNode, key: string): any {
       children,
       markDefs,
     }
-
-    // return {
-    //   _type: 'tsdoc.paragraph',
-    //   children: _transformContainer(transformedParagraph),
-    // }
   }
 
   if (docNode.kind === 'PlainText') {
-    // return {
-    //   _type: 'tsdoc.plainText',
-    //   text: (docNode as DocPlainText).text,
-    // }
     return {
       _type: 'span',
       _key: key,
@@ -183,10 +158,6 @@ function _transformDocNode(docNode: DocNode, key: string): any {
   }
 
   if (docNode.kind === 'SoftBreak') {
-    // return {
-    //   _type: 'tsdoc.softBreak',
-    //   text: '\n',
-    // }
     return {
       _type: 'span',
       _key: key,
@@ -197,13 +168,6 @@ function _transformDocNode(docNode: DocNode, key: string): any {
   if (docNode.kind === 'BlockTag') {
     const node = docNode as DocBlockTag
 
-    // console.log(node.tagName)
-
-    // return {
-    //   _type: 'tsdoc.blockTag',
-    //   _key: key,
-    //   name: node.tagName,
-    // }
     return {
       _type: 'span',
       _key: key,
@@ -215,17 +179,17 @@ function _transformDocNode(docNode: DocNode, key: string): any {
   throw new Error(`unknown doc node type: ${docNode.kind}`)
 }
 
-function _transformContainer(section: DocNodeContainer) {
+function _transformContainer(section: DocNodeContainer): Record<string, unknown>[] | undefined {
   if (!section.nodes.length) return undefined
 
   const nodes = section.nodes
     .map((node, idx) => _transformDocNode(node, String(idx)))
-    .filter(Boolean)
+    .filter(Boolean) as Record<string, unknown>[]
 
   return nodes.length ? nodes : undefined
 }
 
-function _transformDocComment(docComment: DocComment) {
+export function transformDocComment(docComment: DocComment): Record<string, unknown> {
   // Summary
   const summary = _transformContainer(docComment.summarySection)
 
@@ -293,11 +257,4 @@ function _transformDocComment(docComment: DocComment) {
     seeBlocks,
     modifierTags,
   }
-}
-
-export function transformDocComment(code = ''): any {
-  const tsdocParser = new TSDocParser()
-  const parserContext = tsdocParser.parseString(code)
-
-  return _transformDocComment(parserContext.docComment)
 }
