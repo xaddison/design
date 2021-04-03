@@ -89,6 +89,7 @@
     "*.{js,jsx,ts,tsx}": "eslint"
   },
   "dependencies": {
-    "core-js": "^3.0.0"
+    "core-js": "^3.0.0",
+    "prismjs": "^1.23.0"
   }
 }
